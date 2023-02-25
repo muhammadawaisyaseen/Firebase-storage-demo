@@ -2,8 +2,11 @@ import 'package:firebase_storage_example/constants/routes.dart';
 import 'package:firebase_storage_example/screens/add_items_page.dart';
 import 'package:firebase_storage_example/screens/items_view_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -20,10 +23,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: ItemsViewPage(),
-    routes: {
-      addItemsRoute:(context) => AddItemsPage(),
-      itemsViewRoute:(context) => ItemsViewPage(),
-    },
+      routes: {
+        addItemsRoute: (context) => AddItemsPage(),
+        itemsViewRoute: (context) => ItemsViewPage(),
+      },
     );
   }
 }
