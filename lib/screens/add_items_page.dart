@@ -59,9 +59,9 @@ class AddItemsPage extends StatelessWidget {
                     referenceDirImages.child(uniqueFileName);
 
                 try {
-                  //store the file
+                  // 2.1) store the file(image) to firebase
                   await referenceImageToUpload.putFile(File(file!.path));
-                  // 3) get doenload url
+                  // 3) get download url of image
                   imageUrl= await referenceImageToUpload.getDownloadURL();
                 } catch (error) {}
 
