@@ -2,11 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage_example/constants/routes.dart';
 import 'package:firebase_storage_example/models/product.dart';
 import 'package:flutter/material.dart';
+// import 'package:uuid/uuid.dart';
 
 class ItemsViewPage extends StatelessWidget {
   ItemsViewPage({super.key});
-
-// List<Product> myProduct = [];
 
   final myFirestoreItems =
       FirebaseFirestore.instance.collection('shopping_list');
@@ -28,24 +27,24 @@ class ItemsViewPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             QuerySnapshot<Map<String, dynamic>>? querySnapshot = snapshot.data;
-            
-            // print(querySnapshot);
-            // print(querySnapshot!.docs);
-            // querySnapshot.docs;
-            // List<QueryDocumentSnapshot> document = querySnapshot!.docs;
-            // print(document);
-            // document.add
+            List<Product> product = [];
+            for (DocumentSnapshot<Map<String, dynamic>> e
+                in querySnapshot!.docs) {
+              product.add(Product.fromMap(e));
+            }
             return ListView.builder(
-              itemCount: document.length,
+              // itemCount: products.length,
+              itemCount: product.length,
               itemBuilder: (context, index) {
-                return Container(
-                  child: ListTile(
-                       title: Text(document[index]['nameOfItem']),
-                      // subtitle: Text(snapshot.data?.docs[index]['quantityOfItem']),
-                      // leading: Container(
-                      //     child:
-                      //         Image.network(snapshot.data?.docs[index]['image'])),
-                      ),
+                return ListTile(
+                  title: Text(product[index].nameOfItem),
+                  subtitle: Text(product[index].quantityOfItem),
+                  leading: Image.network(product[index].image),
+                  trailing: IconButton(
+                      onPressed: () {
+                        myFirestoreItems.doc(product[index].uid).delete();
+                      },
+                      icon: const Icon(Icons.delete)),
                 );
               },
             );
@@ -53,15 +52,6 @@ class ItemsViewPage extends StatelessWidget {
           return SizedBox();
         },
       ),
-      // ListView.builder(
-      //   itemCount: 5,
-      //   itemBuilder: (context, index) {
-      //     return const ListTile(
-      //       title: Text('Awais'),
-      //       subtitle: Text('2'),
-      //     );
-      //   },
-      // ),
     );
   }
 }

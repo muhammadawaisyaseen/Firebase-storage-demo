@@ -7,13 +7,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 class AddItemsPage extends StatelessWidget {
   AddItemsPage({super.key});
 
-  // List<>
-
-
+  final uuid = Uuid().v4();
+  
   final TextEditingController _nameOfItem = TextEditingController();
   final TextEditingController _quantity = TextEditingController();
 
@@ -24,8 +24,7 @@ class AddItemsPage extends StatelessWidget {
   // CollectionReference items =
   //     FirebaseFirestore.instance.collection('shopping_list');
   // Firestore.instance.collection("you_Collection_Path")
-  final items =
-      FirebaseFirestore.instance.collection('shopping_list');
+  final items = FirebaseFirestore.instance.collection('shopping_list');
   // final FirebaseFirestore firestore = FirebaseFirestore.instance;
 // firestore.collection('shopping_list');
 
@@ -97,16 +96,13 @@ class AddItemsPage extends StatelessWidget {
                     ),
                   );
                 }
-                await items.add({
+                await items.doc(uuid).set({
+                  'uid':uuid,
                   'nameOfItem': _nameOfItem.text,
                   'quantityOfItem': _quantity.text,
                   'image': imageUrl,
                 });
-                // Navigator.push(context, MaterialPageRoute(
-                //   builder: (context) {
-                //     ItemsViewPage(obj:,);
-                //   },
-                // ));
+                
               },
               child: const Text('Submit'),
             ),
