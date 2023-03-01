@@ -1,16 +1,34 @@
 import 'dart:io';
-
 import 'package:firebase_storage_example/constants/routes.dart';
+import 'package:firebase_storage_example/database.dart';
+import 'package:firebase_storage_example/screens/items_view_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AddItemsPage extends StatelessWidget {
   AddItemsPage({super.key});
 
+  // List<>
+
+
   final TextEditingController _nameOfItem = TextEditingController();
   final TextEditingController _quantity = TextEditingController();
+
   String imageUrl = '';
+  String nameOfItem = '';
+  String quantityOfItem = '';
+  String image = '';
+  // CollectionReference items =
+  //     FirebaseFirestore.instance.collection('shopping_list');
+  // Firestore.instance.collection("you_Collection_Path")
+  final items =
+      FirebaseFirestore.instance.collection('shopping_list');
+  // final FirebaseFirestore firestore = FirebaseFirestore.instance;
+// firestore.collection('shopping_list');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,21 +76,38 @@ class AddItemsPage extends StatelessWidget {
                 Reference referenceImageToUpload =
                     referenceDirImages.child(uniqueFileName);
 
-                try {
-                  // 2.1) store the file(image) to firebase
-                  await referenceImageToUpload.putFile(File(file!.path));
-                  // 3) get download url of image
-                  imageUrl= await referenceImageToUpload.getDownloadURL();
-                } catch (error) {}
+                // try {
+                // 2.1) store the file(image) to firebase
+                await referenceImageToUpload.putFile(File(file.path));
+                // 3) get download url of image
+                imageUrl = await referenceImageToUpload.getDownloadURL();
+                // } catch (error) {}
 
-                // get the url of uploaded image
                 // store url on firestore database corresponding to item
                 // display data on ItemViewPage
               },
               icon: const Icon(Icons.camera_alt_outlined),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                if (imageUrl.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please upload an image'),
+                    ),
+                  );
+                }
+                await items.add({
+                  'nameOfItem': _nameOfItem.text,
+                  'quantityOfItem': _quantity.text,
+                  'image': imageUrl,
+                });
+                // Navigator.push(context, MaterialPageRoute(
+                //   builder: (context) {
+                //     ItemsViewPage(obj:,);
+                //   },
+                // ));
+              },
               child: const Text('Submit'),
             ),
           ],
