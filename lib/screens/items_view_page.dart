@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage_example/constants/routes.dart';
 import 'package:firebase_storage_example/models/product.dart';
 import 'package:flutter/material.dart';
+
+import 'edit_item_page.dart';
 // import 'package:uuid/uuid.dart';
 
 class ItemsViewPage extends StatelessWidget {
@@ -33,10 +35,19 @@ class ItemsViewPage extends StatelessWidget {
               product.add(Product.fromMap(e));
             }
             return ListView.builder(
-              // itemCount: products.length,
               itemCount: product.length,
               itemBuilder: (context, index) {
                 return ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return EdidItemPage(
+                          uid: product[index].uid,
+                        );
+                      },
+                    ));
+                    // Navigator.of(context).pushNamed(editItemsRoute);
+                  },
                   title: Text(product[index].nameOfItem),
                   subtitle: Text(product[index].quantityOfItem),
                   leading: Image.network(product[index].image),
