@@ -13,7 +13,7 @@ class AddItemsPage extends StatelessWidget {
   AddItemsPage({super.key});
 
   final uuid = Uuid().v4();
-  
+
   final TextEditingController _nameOfItem = TextEditingController();
   final TextEditingController _quantity = TextEditingController();
 
@@ -97,12 +97,13 @@ class AddItemsPage extends StatelessWidget {
                   );
                 }
                 await items.doc(uuid).set({
-                  'uid':uuid,
+                  'uid': uuid,
                   'nameOfItem': _nameOfItem.text,
                   'quantityOfItem': _quantity.text,
                   'image': imageUrl,
                 });
-                
+                _nameOfItem.clear();
+                _quantity.clear();
               },
               child: const Text('Submit'),
             ),
