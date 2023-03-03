@@ -27,10 +27,7 @@ class EdidItemPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Update Item'),
       ),
-      body: FutureBuilder(
-        builder: (context, snapshot) {
-          // setupTextControllerListner();
-          return Padding(
+      body: Padding(
             padding: EdgeInsets.all(16),
             child: Column(
               children: [
@@ -61,9 +58,7 @@ class EdidItemPage extends StatelessWidget {
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
     );
   }
 }

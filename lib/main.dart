@@ -2,6 +2,7 @@ import 'package:firebase_storage_example/constants/routes.dart';
 import 'package:firebase_storage_example/screens/add_items_page.dart';
 import 'package:firebase_storage_example/screens/edit_item_page.dart';
 import 'package:firebase_storage_example/screens/items_view_page.dart';
+import 'package:firebase_storage_example/screens/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -31,7 +32,6 @@ class MyApp extends StatelessWidget {
       routes: {
         addItemsRoute: (context) => AddItemsPage(),
         itemsViewRoute: (context) => ItemsViewPage(),
-       // editItemsRoute:(context) => EdidItemPage()
       },
     );
   }

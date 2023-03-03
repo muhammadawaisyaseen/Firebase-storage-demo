@@ -1,6 +1,9 @@
 import 'dart:io';
+// import 'dart:js_util';
 import 'package:firebase_storage_example/constants/routes.dart';
 import 'package:firebase_storage_example/database.dart';
+import 'package:firebase_storage_example/database/items_api.dart';
+import 'package:firebase_storage_example/models/product.dart';
 import 'package:firebase_storage_example/screens/items_view_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,12 +24,8 @@ class AddItemsPage extends StatelessWidget {
   String nameOfItem = '';
   String quantityOfItem = '';
   String image = '';
-  // CollectionReference items =
-  //     FirebaseFirestore.instance.collection('shopping_list');
-  // Firestore.instance.collection("you_Collection_Path")
+
   final items = FirebaseFirestore.instance.collection('shopping_list');
-  // final FirebaseFirestore firestore = FirebaseFirestore.instance;
-// firestore.collection('shopping_list');
 
   @override
   Widget build(BuildContext context) {
@@ -96,14 +95,28 @@ class AddItemsPage extends StatelessWidget {
                     ),
                   );
                 }
-                await items.doc(uuid).set({
-                  'uid': uuid,
-                  'nameOfItem': _nameOfItem.text,
-                  'quantityOfItem': _quantity.text,
-                  'image': imageUrl,
-                });
-                _nameOfItem.clear();
-                _quantity.clear();
+                //     for (DocumentSnapshot<Map<String, dynamic>> e
+                //     in querySnapshot!.docs) {
+                //   product.add(Product.fromMap(e));
+                // }
+                Product p = Product(
+                  uid: uuid,
+                  nameOfItem: _nameOfItem.text,
+                  quantityOfItem: _quantity.text,
+                  image: imageUrl,
+                );
+                // items.doc(uuid).set(p.toMap());
+
+                ItemsApi().addItem(p);
+
+                // await items.doc(uuid).set({
+                //   'uid': uuid,
+                //   'nameOfItem': _nameOfItem.text,
+                //   'quantityOfItem': _quantity.text,
+                //   'image': imageUrl,
+                // });
+                // _nameOfItem.clear();
+                // _quantity.clear();
               },
               child: const Text('Submit'),
             ),
