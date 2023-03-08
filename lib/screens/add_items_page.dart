@@ -22,7 +22,7 @@ class AddItemsPage extends StatelessWidget {
 
   String imageUrl = '';
   String nameOfItem = '';
-  String quantityOfItem = '';
+  int? quantityOfItem;
   String image = '';
 
   final items = FirebaseFirestore.instance.collection('shopping_list');
@@ -102,12 +102,12 @@ class AddItemsPage extends StatelessWidget {
                 Product p = Product(
                   uid: uuid,
                   nameOfItem: _nameOfItem.text,
-                  quantityOfItem: _quantity.text,
+                  quantityOfItem: int.parse(_quantity.text),
                   image: imageUrl,
                 );
                 // items.doc(uuid).set(p.toMap());
 
-                ItemsApi().addItem(p);
+                await ItemsApi().addItem(p);
 
                 // await items.doc(uuid).set({
                 //   'uid': uuid,
@@ -115,8 +115,8 @@ class AddItemsPage extends StatelessWidget {
                 //   'quantityOfItem': _quantity.text,
                 //   'image': imageUrl,
                 // });
-                // _nameOfItem.clear();
-                // _quantity.clear();
+                _nameOfItem.clear();
+                _quantity.clear();
               },
               child: const Text('Submit'),
             ),
